@@ -33,12 +33,21 @@ if [[ "${installAll}" == 'y' ]]; then
 		if apt-get -y install mysql-server > /dev/null 2>&1; then
 			printf "${SUCCESS}Success${NC}\n"
 		fi
+
+		gnome-terminal --disable-factory -- "mysql_secure_installation"
+
+		mpid=$!
 	else
 		printf "Install MariaDB DBMS: "
 		if apt-get -y install mariadb-server > /dev/null 2>&1; then
 			printf "${SUCCESS}Success${NC}\n"
 		fi
+		
+		gnome-terminal --disable-factory -- "mysql_secure_installation"
+
+		mpid=$!
 	fi
+
 
 	printf "\nInstalling PHP: "
 	if apt-get -y install php libapache2-mod-php php-mysql > /dev/null 2>&1; then
@@ -71,7 +80,7 @@ if [[ "${installAll}" == 'y' ]]; then
 	read phpMyAdmin
 
 	if [ "${phpMyAdmin}" == 'y' ]; then
-		if apt-get -y install phpmyadmin; then
+		if sudo apt-get -y install phpmyadmin; then
 			printf "phpMyAdmin installed ${SUCCESS}Succesfully${NC}\n"
 		fi
 	fi
