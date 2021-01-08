@@ -8,7 +8,7 @@ SUCCESS='\033[0;32m'
 WARNING='\033[1;33m'
 NC='\033[0;0m'
 
-domainName=$1
+domainName=''
 serverRoot="/srv/${domainName}"
 
 # Check if user login as root
@@ -18,6 +18,7 @@ if [ "$(whoami)" != "root" ]; then
 fi
 
 # Enter root path to web server
+read -p "Enter new domain: " domainName
 read -p "Enter Document root path: " documentRoot
 read -p "Enter admin E-mail: " adminEmail
 
@@ -50,7 +51,7 @@ printf "Can I restart Apache2 package to apply changes? (y/n): "
 read q
 
 if [[ "${q}" == "y" ]]; then
-	a2ensite $domainName
+	a2ensite "${domainName}"
 	if ! systemctl apache2 restart; then
 		systemctl status apache2
 	fi
